@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import requests
 from django.conf import settings
 from django.db import models
@@ -76,10 +74,10 @@ class DataLoad(models.Model):
         return photo
 
     @classmethod
-    def update_data(cls) -> (DataLoad, bool):
+    def update_data(cls):
         """
         Load and update doctor's data
-        :return: last DataLoad object,
+        :return: last DataLoad object, is new (bool)
         """
         url = f'https://api.airtable.com/v0/{settings.AIR_APP}/Psychotherapists'
         headers = {"Authorization": f"Bearer {settings.AIR_API_KEY}"}
