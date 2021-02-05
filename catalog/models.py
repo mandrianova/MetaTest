@@ -109,7 +109,7 @@ class DataLoad(models.Model):
         deleted_doctors = last_data_ids - new_data_ids
         if deleted_doctors:
             Doctor.objects.filter(
-                source_id__in=[doctor['id'] for doctor in deleted_doctors]
+                source_id__in=list(deleted_doctors)
             ).delete()
 
         # Get updated and new info
