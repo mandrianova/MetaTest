@@ -2,7 +2,10 @@
   <b-container class="mx-0 px-0">
     <b-row class="my-5 d-flex justify-content-between">
       <h1>Список психотерапевтов</h1>
-      <b-button variant="outline-primary" v-on:click="updateData" v-bind:disabled="updating">Обновить данные</b-button>
+      <b-button variant="outline-primary" v-on:click="updateData" v-bind:disabled="updating">
+        <b-spinner v-if="updating" small></b-spinner>
+        {{ updating ? "Обновление" : "Обновить данные" }}
+      </b-button>
     </b-row>
     <b-alert v-if="message" v-bind:variant="message_type" show="">
         {{message}}

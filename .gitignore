@@ -19,6 +19,7 @@ frontend/node_modules
 /media/*
 # Distribution / packaging
 .Python
+/staticfiles/*
 
 develop-eggs/
 dist/
