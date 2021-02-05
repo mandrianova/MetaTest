@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 
 from meta.views import index_view
@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v0/catalog/', include('catalog.urls')),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico'), name='favicon'),
-    path('', index_view, name='index')
+    re_path(r'^(?!api\/.*|favicon\.ico|admin\/.*|static\/.*|media\/.*).*', index_view, name='index')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
