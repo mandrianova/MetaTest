@@ -6,7 +6,7 @@ from catalog.models import Doctor, Photo
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ['full', 'small', 'large']
+        fields = ['full', 'small', 'large', 'small_source_url', 'large_source_url']
 
 
 class DoctorSerializer(serializers.ModelSerializer):

@@ -18,6 +18,10 @@ def get_image_path(instance, filename):
 
 
 class Photo(models.Model):
+    source_url = models.URLField(null=True)
+    full_source_url = models.URLField(null=True)
+    small_source_url = models.URLField(null=True)
+    large_source_url = models.URLField(null=True)
     source_file = models.ImageField(upload_to=get_image_path, null=True)
     full = models.ImageField(upload_to=get_image_path, null=True)
     small = models.ImageField(upload_to=get_image_path, null=True)
@@ -66,10 +70,15 @@ class DataLoad(models.Model):
             photo.source_id = data['id']
             photo.save()
         thumbnails = data['thumbnails']
-        photo.source_file.save('source.jpg', Photo.get_photo_from_url(data['url']), save=True)
-        photo.full.save('full.jpg', Photo.get_photo_from_url(thumbnails['full']['url']), save=True)
-        photo.large.save('large.jpg', Photo.get_photo_from_url(thumbnails['large']['url']), save=True)
-        photo.small.save('small.jpg', Photo.get_photo_from_url(thumbnails['small']['url']), save=True)
+        photo.source_url = data['url']
+        photo.full_source_url = thumbnails['full']['url']
+        photo.large_source_url = thumbnails['large']['url']
+        photo.small_source_url = thumbnails['small']['url']
+        if not photo.source_file:
+            photo.source_file.save('source.jpg', Photo.get_photo_from_url(data['url']), save=True)
+            photo.full.save('full.jpg', Photo.get_photo_from_url(thumbnails['full']['url']), save=True)
+            photo.large.save('large.jpg', Photo.get_photo_from_url(thumbnails['large']['url']), save=True)
+            photo.small.save('small.jpg', Photo.get_photo_from_url(thumbnails['small']['url']), save=True)
         photo.save()
         return photo
 

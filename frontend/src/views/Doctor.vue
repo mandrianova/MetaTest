@@ -48,7 +48,7 @@ export default {
     service.getDoctor(this.id)
       .then(json => {
         this.name = json.name
-        this.imgUrl = json.photo.large
+        this.imgUrl = json.photo.large_source_url
         this.methods = json.methods
         this.loading = false
       }).catch(() => {
