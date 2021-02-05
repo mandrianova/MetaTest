@@ -10,13 +10,19 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    props: (route) => ({ currentPage: route.query.page || 1 })
+    props: (route) => ({ currentPage: route.query.page || 1 }),
+    meta: {
+      title: 'Meta. Список психотерапевтов'
+    }
   },
   {
     path: '/doctor/:id',
     name: 'Doctor',
     component: Doctor,
-    props: true
+    props: true,
+    meta: {
+      title: 'Meta. Страница психотерапевта'
+    }
   }
 ]
 
@@ -24,6 +30,11 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
 })
 
 export default router

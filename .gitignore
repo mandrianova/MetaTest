@@ -20,7 +20,9 @@ frontend/node_modules
 # Distribution / packaging
 .Python
 /staticfiles/*
-
+docker-compose.yml
+dockerfile
+.dockerignore
 develop-eggs/
 dist/
 downloads/
