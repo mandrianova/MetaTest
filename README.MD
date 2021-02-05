@@ -47,7 +47,7 @@
 
 **Настройки Django:**
 
-- DJANGO_SETTINGS_MODULE=meta.settings;
+- DJANGO_SETTINGS_MODULE
 - SECRET_KEY
 - DEBUG
 

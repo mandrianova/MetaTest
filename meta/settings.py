@@ -1,3 +1,4 @@
+import django_heroku
 """
 Django settings for meta project.
 
@@ -173,3 +174,4 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
 }
 
+django_heroku.settings(locals())
