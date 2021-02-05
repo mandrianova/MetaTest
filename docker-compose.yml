@@ -1,0 +1,30 @@
+  version: '3'
+
+  services:
+    db:
+      image: postgres
+      ports:
+      - "5432:5432"
+      - "35431:5432"
+      restart: always
+      volumes:
+      - meta:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_DB=metadb
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=sdfsdf324234
+    web:
+      build: .
+      environment:
+        - DJANGO_SETTINGS_MODULE=meta.settings
+      volumes:
+        - .:/app
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+      command:
+        - python manage.py collectstatic --noinput
+  volumes:
+    meta:
+
