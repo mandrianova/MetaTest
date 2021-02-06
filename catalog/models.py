@@ -64,11 +64,12 @@ class DataLoad(models.Model):
 
     @classmethod
     def _save_photo(cls, data: dict) -> Photo:
-        photo = Photo.objects.filter(source_id=data['id']).first()
-        if not photo:
-            photo = Photo()
-            photo.source_id = data['id']
-            photo.save()
+        photo = Photo.objects.filter(source_id=data.get('id')).first()
+        if photo:
+            return photo
+        photo = Photo()
+        photo.source_id = data['id']
+        photo.save()
         thumbnails = data['thumbnails']
         photo.source_url = data['url']
         photo.full_source_url = thumbnails['full']['url']
@@ -97,15 +98,15 @@ class DataLoad(models.Model):
         if last_data and last_data.data == response.json():
             return last_data, False
         new_data = DataLoad(data=response.json())
-        if not new_data.data['records']:
+        if not new_data.data.get('records'):
             raise LoadException("No data")
 
         # Get deleted doctors
         if last_data:
-            last_data_ids = set([doctor['id'] for doctor in last_data.data['records']])
+            last_data_ids = set([doctor.get('id') for doctor in last_data.data['records']])
         else:
             last_data_ids = set()
-        new_data_ids = set([doctor['id'] for doctor in new_data.data['records']])
+        new_data_ids = set([doctor.get('id') for doctor in new_data.data['records']])
         deleted_doctors = last_data_ids - new_data_ids
         if deleted_doctors:
             Doctor.objects.filter(
@@ -114,20 +115,23 @@ class DataLoad(models.Model):
 
         # Get updated and new info
         for doctor_info in new_data.data['records']:
-            doctor = Doctor.objects.filter(source_id=doctor_info["id"]).first()
+            doctor = Doctor.objects.filter(source_id=doctor_info.get("id")).first()
             if not doctor:
                 doctor = Doctor()
-                doctor.source_id = doctor_info["id"]
-            if not doctor_info['fields']:
-                doctor.save()
+                doctor.source_id = doctor_info.get("id")
+            if not doctor_info.get('fields') or not doctor_info.get("id"):
                 continue
-            doctor.name = doctor_info['fields']['Имя']
-            if doctor_info["fields"]["Методы"]:
+            doctor.name = doctor_info['fields'].get('Имя')
+            if doctor_info["fields"].get("Методы"):
                 methods = [Method.objects.get_or_create(name=i)[0] for i in doctor_info["fields"]["Методы"]]
                 doctor.save()
                 doctor.methods.set(methods)
-            if doctor_info["fields"]['Фотография'][0]:
+            else:
+                doctor.methods.set([])
+            if doctor_info["fields"].get('Фотография'):
                 doctor.photo = cls._save_photo(doctor_info["fields"]['Фотография'][0])
+            else:
+                doctor.photo = None
             doctor.save()
         new_data.save()
         return new_data, True

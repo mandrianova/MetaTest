@@ -28,6 +28,7 @@
 
 <script>
 import MetaResource from '@/services/Meta'
+import image from '../img/freud.jpg'
 import Loader from '@/components/Loader'
 const service = new MetaResource()
 export default {
@@ -49,7 +50,7 @@ export default {
     service.getDoctor(this.id)
       .then(json => {
         this.name = json.name
-        this.imgUrl = json.photo.large_source_url
+        this.imgUrl = json.photo && json.photo.large_source_url ? json.photo.large_source_url : image
         this.methods = json.methods
         this.loading = false
       }).catch(() => {
