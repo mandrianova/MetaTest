@@ -127,6 +127,7 @@ class DataLoad(models.Model):
                 doctor.save()
                 doctor.methods.set(methods)
             else:
+                doctor.save()
                 doctor.methods.set([])
             if doctor_info["fields"].get('Фотография'):
                 doctor.photo = cls._save_photo(doctor_info["fields"]['Фотография'][0])
