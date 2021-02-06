@@ -15,7 +15,7 @@
         <b-col md="8">
           <b-card-body>
             <h1 class="mb-3">{{name}}</h1>
-            <h5 v-if="methods">Методы:</h5>
+            <h5 v-if="methods.length">Методы:</h5>
             <h5><b-badge pill variant="info" v-for="(method, key) in methods" :key="key" class="mr-2">{{method}}</b-badge></h5>
           </b-card-body>
         </b-col>
